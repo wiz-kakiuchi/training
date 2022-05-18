@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     PasswordEncoder passwordEncoder() {
+        // TODO: ログイン画面を自分で作るかも
         // TODO: 余裕があったらパスワードのハッシュ化するかも
         return NoOpPasswordEncoder.getInstance();
     }

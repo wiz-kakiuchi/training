@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ユーザー情報一覧</title>
+  <link rel="stylesheet" href="/css/list.css"></link>
+</head>
+
+<body>
+  <h1><a href="/list">ユーザー情報一覧</a></h1>
+  <a href="/add">ユーザー追加</a>
+  <a href="/logout">ログアウト</a>
+  <p>こんにちは、<span th:text="${#authentication.principal.name}"></span>さん！</p>
+  
+  <form th:action="@{/name_search}" th:object="${employee}">
+    <input type="search" name="name" placeholder="名前検索">
+    <button>検索</button>
+  </form>
+
+  <table>
+    <tr>
+      <th>社員ID</th>
+      <th>名前</th>
+      <th>所属先ID</th>
+      <th>メールアドレス</th>
+      <th>パスワード</th>
+      <th>管理者権限</th>
+      <th>編集</th>
+      <th>削除</th>
+    </tr>
+    <tr th:each="employee:${employeeList}" th:object="${employee}">
+      <td th:text="*{employee_id}"></td>
+      <td th:text="*{name}"></td>
+      <td th:text="*{belong_name}"></td>
+      <td th:text="*{mail_address}"></td>
+      <td th:text="*{password}"></td>
+      <td th:text="*{management}"></td>
+      <td><a th:href="@{/edit(employee_id=*{employee_id})}">編集</a></td>
+      <td>
+        <th:block th:if="*{management} == null">
+          <th:block th:if="*{employee_id} != ${#authentication.principal.employee_id}">
+            <a th:href="@{/delete(employee_id=*{employee_id})}">削除</a>
+          </th:block>
+        </th:block>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

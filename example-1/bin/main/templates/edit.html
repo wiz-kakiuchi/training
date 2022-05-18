@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ユーザー編集</title>
+  <link rel="stylesheet" href="css/edit.css"></link>
+</head>
+
+<body>
+  <main>
+    <form th:action="@{/update}" method="post" th:object="${employee}" enctype="multipart/form-data">
+      <h1>ユーザー編集</h1>
+      <input type="hidden" name="employee_id" th:value="*{employee_id}">
+      <table>
+        <tr>
+          <th>名前</th>
+          <td><input class="form-textarea" type="text" name="name" th:value="*{name}" maxlength="32" required></td>
+        </tr>
+        <tr>
+          <th>所属先</th>
+          <td>
+            <select name="belong_id">
+              <option value="0" th:selected="*{belong_id} == 0">未所属</option>
+              <option value="1" th:selected="*{belong_id} == 1">人事部</option>
+              <option value="2" th:selected="*{belong_id} == 2">経理部</option>
+              <option value="3" th:selected="*{belong_id} == 3">総務部</option>
+              <option value="4" th:selected="*{belong_id} == 4">法務部</option>
+              <option value="5" th:selected="*{belong_id} == 5">技術部</option>
+              <option value="6" th:selected="*{belong_id} == 6">経理部</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><input class="form-textarea" type="email" name="mail_address" th:value="*{mail_address}" required></td>
+        </tr>
+        <tr>
+          <th>パスワード</th>
+          <td><input class="form-textarea" type="password" name="password" th:value="*{password}" minlength="8" maxlength="255" required></td>
+        </tr>
+        <tr>
+          <th>写真</th>
+          <td>
+            <img th:src="@{'images/' + *{image_file_path}}"><br>
+            <input type="file" th:field="*{multipartFile}">
+          </td>
+        </tr>
+      </table>
+      <label><input type="checkbox" name="management" value="Y" th:checked="*{management}">管理者権限</label>
+      <button>変更</button>
+    </form>
+  </main>
+</body>
+
+</html>

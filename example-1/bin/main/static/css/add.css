@@ -1,0 +1,41 @@
+button {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+}
+
+form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+input.form-textarea {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  width: 100%;
+}
+
+select {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+
+table {
+  max-width: 960px;
+}
+
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 15px;
+}

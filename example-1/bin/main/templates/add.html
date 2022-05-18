@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ユーザー追加</title>
+  <link rel="stylesheet" href="/css/add.css"></link>
+</head>
+
+<body>
+  <main>
+    <form th:method="post" th:action="@{/create}" th:object="${employee}">
+      <h1>ユーザー追加</h1>
+      <table>
+        <tr>
+          <th>名前</th>
+          <td><input class="form-textarea" type="text" name="name" maxlength="32" required></td>
+        </tr>
+        <tr>
+          <th>所属先</th>
+          <td>
+            <select name="belong_id">
+              <option value="0">未所属</option>
+              <option value="1">人事部</option>
+              <option value="2">経理部</option>
+              <option value="3">総務部</option>
+              <option value="4">法務部</option>
+              <option value="5">技術部</option>
+              <option value="6">経理部</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><input class="form-textarea" type="email" name="mail_address" required></td>
+        </tr>
+        <tr>
+          <th>パスワード</th>
+          <td><input class="form-textarea" type="password" name="password" minlength="8" maxlength="255" required></td>
+        </tr>
+        <tr>
+          <th>写真</th>
+          <td><input type="file" name="image_file_path"></td>
+        </tr>
+      </table>
+      <label><input type="checkbox" name="management" value="Y">管理者権限</label>
+      <button>ユーザー作成</button>
+    </form>
+  </main>
+</body>
+
+</html>

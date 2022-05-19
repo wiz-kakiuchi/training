@@ -97,7 +97,7 @@ public class EmployeeController {
     @PostMapping("/update")
     public String update(Employee employee) {
         final boolean mailExists = employeeService.duplicationCheck(employee);
-        // メールアドレスが存在しないなら編集する
+        // メールアドレスが存在するならupdate画面に戻る
         if (mailExists) {
             return "/update";
         }

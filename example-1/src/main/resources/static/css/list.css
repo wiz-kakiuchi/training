@@ -1,9 +1,35 @@
+form {
+  display: flex;
+  margin: 20px 0;
+}
+
+form button {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 20px;
+  width: 20%;
+}
+
+form input {
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 80%;
+}
+
 table {
-	text-align: center;
-	width: 90%;
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
 }
 
 table td,
 table th {
   border: 1px solid #ddd;
+}
+
+.bg-management {
+  background-color: #f8f5f2;
 }

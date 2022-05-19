@@ -6,10 +6,14 @@ button {
 }
 
 form {
-  align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+}
+
+img {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
 }
 
 input {
@@ -31,11 +35,12 @@ select {
 }
 
 table {
+  text-align: center;
   max-width: 960px;
 }
 
 table td,
 table th {
-  border: 1px solid #ddd;
   padding: 15px;
+  border: 1px solid #ddd;
 }

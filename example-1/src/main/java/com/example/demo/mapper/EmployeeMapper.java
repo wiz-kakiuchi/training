@@ -21,12 +21,20 @@ public interface EmployeeMapper {
     public List<Employee> selectAll();
 
     // 社員の検索（名前）
-    @Select("select * from employee_tbl where name like concat('%', #{name}, '%')")
+    @Select("select * from employee_tbl "
+            + "inner join belong_master_tbl "
+            + "on employee_tbl.belong_id = belong_master_tbl.belong_id "
+            + "where name like concat('%', #{name}, '%') "
+            + "order by management, employee_id asc")
     public List<Employee> nameSearch(String name);
 
     // 社員の検索（社員ID）
     @Select("select * from employee_tbl where employee_id = #{employee_id}")
     public Employee idSearch(long employee_id);
+    
+    // 社員の検索（メールアドレス）
+    @Select("select employee_id from employee_tbl where mail_address = #{mail_address}")
+    public String mailSearch(String mail_address);
 
     // 社員の追加
     @Insert("insert into employee_tbl ("

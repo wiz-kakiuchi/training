@@ -40,13 +40,12 @@ public class EmployeeController {
     // 社員編集の表示
     @GetMapping("/edit")
     public String displayEdit(@AuthenticationPrincipal Employee loginUser, long employee_id, Model model) {
-        // 管理者権限を持っていないユーザーの編集ページしか表示できない
         if (loginUser.getEmployee_id() != employee_id) {
             if (loginUser.getManagement() == null) {
                 return "redirect:/list";
             }
         }
-        
+
         final Employee employee = employeeService.idSearch(employee_id);
         model.addAttribute("employee", employee);
         return "edit";
@@ -97,7 +96,6 @@ public class EmployeeController {
     // 社員の編集
     @PostMapping("/update")
     public String update(@AuthenticationPrincipal Employee loginUser, Employee employee) {
-        // 管理者権限を持っていないユーザーは自分しか編集できない
         if (loginUser.getEmployee_id() != employee.getEmployee_id()) {
             if (loginUser.getManagement() == null) {
                 return "redirect:/list";

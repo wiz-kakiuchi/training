@@ -36,11 +36,6 @@ public class EmployeeService implements UserDetailsService {
     public Employee idSearch(long employee_id) {
         return employeeMapper.idSearch(employee_id);
     }
-    
-    // 社員の検索（メールアドレス）
-    public String mailSearch(String mail_address) {
-        return employeeMapper.mailSearch(mail_address);
-    }
 
     // 社員追加
     public void create(Employee employee) {
@@ -50,8 +45,7 @@ public class EmployeeService implements UserDetailsService {
     // 社員削除
     public void delete(long employee_id) {
         Employee employee = employeeMapper.idSearch(employee_id);
-        
-        // FIXME: ログインユーザーが権限が持っていない場合URLから削除できてしまう。
+
         // 削除するユーザーの権限がnullだったら削除する
         if (employee.getManagement() == null) {
             employeeMapper.delete(employee_id);

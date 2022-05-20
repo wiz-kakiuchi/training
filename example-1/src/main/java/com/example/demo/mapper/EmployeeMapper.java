@@ -31,10 +31,6 @@ public interface EmployeeMapper {
     // 社員の検索（社員ID）
     @Select("select * from employee_tbl where employee_id = #{employee_id}")
     public Employee idSearch(long employee_id);
-    
-    // 社員の検索（メールアドレス）
-    @Select("select employee_id from employee_tbl where mail_address = #{mail_address}")
-    public String mailSearch(String mail_address);
 
     // 社員の追加
     @Insert("insert into employee_tbl ("

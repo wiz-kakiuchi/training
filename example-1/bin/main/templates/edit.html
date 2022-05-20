@@ -32,10 +32,9 @@
         <input type="hidden" name="employee_id" th:value="*{employee_id}">
         <table>
           <tr>
-            <th>写真</th>
-            <td>
+            <td colspan="2">
               <th:block th:if="*{image_file_path} == null">
-                <img src="images/0.jpg"><br>
+                <img src="images/default.jpg"><br>
               </th:block>
               <th:block th:if="*{image_file_path} != null">
                 <img th:src="@{'images/' + *{image_file_path}}"><br>

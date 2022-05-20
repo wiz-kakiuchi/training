@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +39,14 @@ public class EmployeeController {
 
     // 社員編集の表示
     @GetMapping("/edit")
-    public String displayEdit(long employee_id, Model model) {
+    public String displayEdit(@AuthenticationPrincipal Employee loginUser, long employee_id, Model model) {
+        // 管理者権限を持っていないユーザーの編集ページしか表示できない
+        if (loginUser.getEmployee_id() != employee_id) {
+            if (loginUser.getManagement() == null) {
+                return "redirect:/list";
+            }
+        }
+        
         final Employee employee = employeeService.idSearch(employee_id);
         model.addAttribute("employee", employee);
         return "edit";
@@ -82,7 +89,6 @@ public class EmployeeController {
             saveFile(file, filePath);
             employee.setImage_file_path(fileName);
         }
-        
         employeeService.create(employee);
 
         return "redirect:/list";
@@ -90,7 +96,14 @@ public class EmployeeController {
 
     // 社員の編集
     @PostMapping("/update")
-    public String update(Employee employee) {
+    public String update(@AuthenticationPrincipal Employee loginUser, Employee employee) {
+        // 管理者権限を持っていないユーザーは自分しか編集できない
+        if (loginUser.getEmployee_id() != employee.getEmployee_id()) {
+            if (loginUser.getManagement() == null) {
+                return "redirect:/list";
+            }
+        }
+
         final boolean mailExists = employeeService.duplicationCheck(employee);
         // メールアドレスが重複しているなら戻る
         if (mailExists) {
@@ -100,6 +113,10 @@ public class EmployeeController {
         final MultipartFile file = employee.getMultipartFile();
         // ファイルが存在するなら保存する
         if (!file.isEmpty()) {
+            // 保存する前に古いアイコンを消す
+            Path path = Paths.get("src/main/resources/static/images/" + employee.getImage_file_path());
+            deleteFile(path);
+
             // ファイル名を 「UUID + 拡張子」にする。
             String fileName = file.getOriginalFilename();
             String extension = fileName.substring(fileName.lastIndexOf("."));
@@ -110,7 +127,6 @@ public class EmployeeController {
             saveFile(file, filePath);
             employee.setImage_file_path(fileName);
         }
-
         employeeService.update(employee);
 
         return "redirect:/list";
@@ -124,6 +140,15 @@ public class EmployeeController {
             stream.write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    // 指定のファイルを削除する
+    private void deleteFile(Path filePath) {
+        try {
+            Files.delete(filePath);
+        } catch (IOException e) {
+            System.out.println(e);
         }
     }
 }

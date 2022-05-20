@@ -28,6 +28,7 @@ table {
 table td,
 table th {
   border: 1px solid #ddd;
+  padding: 5px 0px;
 }
 
 .bg-management {

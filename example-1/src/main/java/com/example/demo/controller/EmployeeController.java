@@ -82,7 +82,7 @@ public class EmployeeController {
             saveFile(file, filePath);
             employee.setImage_file_path(fileName);
         }
-        
+
         employeeService.create(employee);
 
         return "redirect:/list";
@@ -118,6 +118,8 @@ public class EmployeeController {
 
     // 指定パスにファイルを保存する
     private void saveFile(MultipartFile file, Path filePath) {
+        // TODO:ファイルストリームが閉じられていない。以下のURLを参考に閉じる処理を実装してみてください。
+        // TODO: https://qiita.com/NagaokaKenichi/items/124f0e14ce5dfcbd0b6b
         try {
             byte[] bytes = file.getBytes();
             OutputStream stream = Files.newOutputStream(filePath);

@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <title>ユーザー編集</title>
-  <link rel="stylesheet" href="/css/base.css"></link>
-  <link rel="stylesheet" href="/css/edit.css"></link>
+  <link rel="stylesheet" href="/css/base.css">
+  </link>
+  <link rel="stylesheet" href="/css/edit.css">
+  </link>
 </head>
 
 <body>
@@ -30,6 +32,18 @@
         <input type="hidden" name="employee_id" th:value="*{employee_id}">
         <table>
           <tr>
+            <th>写真</th>
+            <td>
+              <th:block th:if="*{image_file_path} == null">
+                <img src="images/0.jpg"><br>
+              </th:block>
+              <th:block th:if="*{image_file_path} != null">
+                <img th:src="@{'images/' + *{image_file_path}}"><br>
+              </th:block>
+              <input type="file" accept="image/*" th:field="*{multipartFile}">
+            </td>
+          </tr>
+          <tr>
             <th>名前</th>
             <td><input class="form-textarea" type="text" name="name" th:value="*{name}" maxlength="32" required></td>
           </tr>
@@ -49,19 +63,13 @@
           </tr>
           <tr>
             <th>メールアドレス</th>
-            <td><input class="form-textarea" type="email" name="mail_address" th:value="*{mail_address}" required></td>
+            <td><input class="form-textarea" type="email" name="mail_address" th:value="*{mail_address}" required>
+            </td>
           </tr>
           <tr>
             <th>パスワード</th>
             <td><input class="form-textarea" type="password" name="password" th:value="*{password}" minlength="8"
                 maxlength="255" required></td>
-          </tr>
-          <tr>
-            <th>写真</th>
-            <td>
-              <img th:src="@{'images/' + *{image_file_path}}"><br>
-              <input type="file" accept="image/*" th:field="*{multipartFile}">
-            </td>
           </tr>
         </table>
         <label><input type="checkbox" name="management" value="Y" th:checked="*{management}">管理者権限</label>

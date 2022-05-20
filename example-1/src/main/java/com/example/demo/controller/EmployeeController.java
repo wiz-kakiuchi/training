@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class EmployeeController {
     // 社員一覧の表示
     @GetMapping("/list")
     public String displayList(Model model) {
-        List<Employee> list = employeeService.selectAll();
+        final List<Employee> list = employeeService.selectAll();
         model.addAttribute("employeeList", list);
         return "list";
     }
@@ -39,7 +40,7 @@ public class EmployeeController {
     // 社員編集の表示
     @GetMapping("/edit")
     public String displayEdit(long employee_id, Model model) {
-        Employee employee = employeeService.idSearch(employee_id);
+        final Employee employee = employeeService.idSearch(employee_id);
         model.addAttribute("employee", employee);
         return "edit";
     }
@@ -47,7 +48,7 @@ public class EmployeeController {
     // 社員の検索（名前から）
     @GetMapping("/name_search")
     public String nameSearch(String name, Model model) {
-        List<Employee> list = employeeService.nameSearch(name);
+        final List<Employee> list = employeeService.nameSearch(name);
         model.addAttribute("employeeList", list);
         return "list";
     }
@@ -63,32 +64,26 @@ public class EmployeeController {
     @PostMapping("/create")
     public String createEmployee(Employee employee) {
         final boolean mailExists = employeeService.duplicationCheck(employee);
-        // メールアドレスが存在しないなら登録する
-        if (!mailExists) {
-            employeeService.create(employee);
-        } else {
-            return "/create";
+        // メールアドレスが重複しているなら戻る
+        if (mailExists) {
+            return "add";
         }
 
         final MultipartFile file = employee.getMultipartFile();
-        String fileName = file.getOriginalFilename();
-
         // ファイルが存在するなら保存する
-        if (fileName != "") {
-            // ファイル名を 「社員ID + 拡張子」にする。
-            String employee_id = employeeService.mailSearch(employee.getMail_address());
+        if (!file.isEmpty()) {
+            // ファイル名を 「UUID + 拡張子」にする。
+            String fileName = file.getOriginalFilename();
             String extension = fileName.substring(fileName.lastIndexOf("."));
-            fileName = employee_id + extension;
+            fileName = UUID.randomUUID() + extension;
 
-            // TODO: もっと良いパスの指定方法を調べる
-            final Path filePath = Paths.get("C:/pleiades/2022-03/workspace/example-1/src/main/resources/static/images/" + fileName);
+            // 保存パスの指定
+            final Path filePath = Paths.get("src/main/resources/static/images/" + fileName);
             saveFile(file, filePath);
-            
-            // TODO: 書き直すべき
             employee.setImage_file_path(fileName);
-            employee.setEmployee_id(Long.parseLong(employee_id));
-            employeeService.update(employee);
         }
+        
+        employeeService.create(employee);
 
         return "redirect:/list";
     }
@@ -97,28 +92,27 @@ public class EmployeeController {
     @PostMapping("/update")
     public String update(Employee employee) {
         final boolean mailExists = employeeService.duplicationCheck(employee);
-        // メールアドレスが存在するならupdate画面に戻る
+        // メールアドレスが重複しているなら戻る
         if (mailExists) {
-            return "/update";
+            return "edit";
         }
 
         final MultipartFile file = employee.getMultipartFile();
-        String fileName = file.getOriginalFilename();
-
         // ファイルが存在するなら保存する
-        if (fileName != "") {
-            // ファイル名を 「社員ID + 拡張子」にする。
-            String employee_id = employeeService.mailSearch(employee.getMail_address());
+        if (!file.isEmpty()) {
+            // ファイル名を 「UUID + 拡張子」にする。
+            String fileName = file.getOriginalFilename();
             String extension = fileName.substring(fileName.lastIndexOf("."));
-            fileName = employee_id + extension;
+            fileName = UUID.randomUUID() + extension;
 
-            // TODO: もっと良いパスの指定方法を調べる
-            final Path filePath = Paths.get("C:/pleiades/2022-03/workspace/example-1/src/main/resources/static/images/" + fileName);
+            // 保存パスの指定
+            final Path filePath = Paths.get("src/main/resources/static/images/" + fileName);
             saveFile(file, filePath);
             employee.setImage_file_path(fileName);
         }
 
         employeeService.update(employee);
+
         return "redirect:/list";
     }
 

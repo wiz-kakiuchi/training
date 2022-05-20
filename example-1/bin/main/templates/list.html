@@ -4,10 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>ユーザー情報一覧</title>
-  <link rel="stylesheet" href="/css/base.css">
-  </link>
-  <link rel="stylesheet" href="/css/list.css">
-  </link>
+  <link rel="stylesheet" href="/css/base.css"></link>
+  <link rel="stylesheet" href="/css/list.css"></link>
 </head>
 
 <body>
@@ -52,7 +50,7 @@
           <td><a th:href="@{/edit(employee_id=*{employee_id})}">編集</a></td>
           <td>
             <th:block th:if="*{management} == null">
-              <th:block th:if="*{employee_id} != ${#authentication.principal.employee_id}">
+              <th:block th:if="${#authentication.principal.management} != null">
                 <a th:href="@{/delete(employee_id=*{employee_id})}">削除</a>
               </th:block>
             </th:block>

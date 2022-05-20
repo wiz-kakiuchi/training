@@ -29,6 +29,13 @@
         <h2>ユーザー追加</h2>
         <table>
           <tr>
+            <th>写真</th>
+            <td>
+              <img src="images/0.jpg"><br>
+              <input type="file" accept="image/*" name="multipartFile">
+            </td>
+          </tr>
+          <tr>
             <th>名前</th>
             <td><input class="form-textarea" type="text" name="name" maxlength="32" required></td>
           </tr>
@@ -53,13 +60,6 @@
           <tr>
             <th>パスワード</th>
             <td><input class="form-textarea" type="password" name="password" minlength="8" maxlength="255" required>
-            </td>
-          </tr>
-          <tr>
-            <th>写真</th>
-            <td>
-              <img src="images/0.jpg"><br>
-              <input type="file" accept="image/*" name="multipartFile">
             </td>
           </tr>
         </table>
